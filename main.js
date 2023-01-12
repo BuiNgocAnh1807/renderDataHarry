@@ -1,5 +1,6 @@
+const getIdLoading = document.getElementById("loading");
+
 function clickCallApi() {
-  document.getElementById("loading").classList.add("load");
   async function getData() {
     const api = await axios.get("https://hp-api.onrender.com/api/characters");
     const { data } = api;
@@ -7,9 +8,19 @@ function clickCallApi() {
     return dataList;
   }
 
+  axios.interceptors.request.use(
+    function (config) {
+      getIdLoading.classList.add("load");
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
+    }
+  );
+
   axios.interceptors.response.use(
     function (response) {
-      document.getElementById("loading").classList.remove("load");
+      getIdLoading.classList.remove("load");
       return response;
     },
     function (error) {
@@ -93,4 +104,6 @@ function clickCallApi() {
     document.querySelector(".card").innerHTML = lists;
   }
   render();
+  const elementBtn = document.querySelector(".btn-api");
+  elementBtn.remove();
 }
