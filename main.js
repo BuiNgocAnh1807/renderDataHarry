@@ -1,12 +1,18 @@
 const getIdLoading = document.getElementById("loading");
 
 function clickCallApi() {
-  async function getData() {
-    const api = await axios.get("https://hp-api.onrender.com/api/characters");
-    const { data } = api;
-    const dataList = data.slice(0, 10);
-    return dataList;
+  function getData() {
+    return new Promise(function (resolve, reject) {
+      axios
+        .get("https://hp-api.onrender.com/api/characters")
+        .then(function (response) {
+          const { data } = response;
+          const dataList = data.slice(0, 10);
+          resolve(dataList);
+        });
+    });
   }
+  console.log(getData());
   axios.interceptors.request.use(
     function (config) {
       getIdLoading.classList.add("load");
@@ -16,9 +22,6 @@ function clickCallApi() {
       return Promise.reject(error);
     }
   );
-  const promiseData = new Promise((resolve, reject) => {
-    resolve(getData());
-  });
   axios.interceptors.response.use(
     function (response) {
       getIdLoading.classList.remove("load");
@@ -29,7 +32,7 @@ function clickCallApi() {
     }
   );
   function render() {
-    promiseData.then((res) => {
+    getData().then((res) => {
       let lists = "";
       res.map((data, index) => {
         lists += `<div class="card__list-group" data-bs-toggle="modal" data-bs-target="#list${index}">
