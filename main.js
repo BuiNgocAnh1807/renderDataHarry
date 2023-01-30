@@ -12,7 +12,6 @@ function clickCallApi() {
         });
     });
   }
-  console.log(getData());
   axios.interceptors.request.use(
     function (config) {
       getIdLoading.classList.add("load");
@@ -34,6 +33,7 @@ function clickCallApi() {
   function render() {
     getData().then((res) => {
       let lists = "";
+      //hello
       res.map((data, index) => {
         lists += `<div class="card__list-group" data-bs-toggle="modal" data-bs-target="#list${index}">
               <img src="${data.image}" alt="Avatar" style="width: 200px ; height: 200px; margin-top: 10px; padding: 10px 20px;">
@@ -112,3 +112,5 @@ function clickCallApi() {
   const elementBtn = document.querySelector(".btn-api");
   elementBtn.remove();
 }
+
+
